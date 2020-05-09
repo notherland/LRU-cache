@@ -3,16 +3,12 @@
 //
 
 #include <stdio.h>
+#include <stdlib.h>
 
 //hash table
 
-struct hash_table {
-    int capacity;
-    struct hash_elem*;
-};
+struct hash* Create_table();
 
-struct hash_table* Create_table();
+struct hash_node* Check_index (int index, struct hash* table);
 
-
-
-void Delete_table(struct hash_table* table);
+void Delete_table(struct hash* table);
