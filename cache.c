@@ -1,4 +1,4 @@
-
+#inlude "header.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,7 +12,7 @@ struct page {
 };
 struct node {
     char* data;
-    int hash;
+    int index;
     struct node* next;
     struct node* prev;
 };
@@ -36,17 +36,17 @@ struct queue* queue_ctor() //создание очереди
     return res;
 }
 
-struct node* node_ctor(int n, int hash, char* text) //создание элемента
+struct node* node_ctor(struct page* page) //создание элемента
 {
     struct node* res = (struct node*) calloc(1, sizeof(*res));
     res->next = NULL;
     res->prev = NULL;
-    res->hash = hash;
-    char* data = (char*) calloc(n, sizeof(char));
-    assert(data != NULL);
-    for (int i = 0; i < n; i++)
-        data[i] = text[i];
-    res->data = data;
+    res->index = page->index;
+    char* text = (char*) calloc(page->n, sizeof(char));
+    assert(text != NULL);
+    for (int i = 0; i < page->n; i++)
+        text[i] = page->data[i];
+    res->data = text;
     return res;
 }
 
@@ -62,17 +62,17 @@ void queue_dtor(struct queue* list) //удаление очереди
 int node_dtor(struct node* elem) //удаление элемента
 {
     assert(elem);
-    int idx = elem->hash;
-    elem->hash = -1;
+    int idx = elem->index;
+    elem->index = -1;
     free(elem->data);
     free(elem);
     elem = NULL;
     return idx;
 }
 
-struct node* add_node(struct queue* list, int hash, struct page* page) //добавление элемента в начало
+struct node* add_node(struct queue* list, struct page* page) //добавление элемента в начало
 {
-    struct node* elem = node_ctor(page->n, hash, page->data);
+    struct node* elem = node_ctor(page);
     if (list->length == 0)
     {
         elem->next = NULL;
@@ -91,22 +91,22 @@ struct node* add_node(struct queue* list, int hash, struct page* page) //доб�
     return elem;
 }
 
-struct node* add_new_elem(struct queue* list, struct page* page, int hash, int* hash_last) //добавление нового элемента
+struct node* add_new_elem(struct queue* list, struct page* page, int* last_idx) //добавление нового элемента
 {
     assert(list->capacity >= list->length);
     if (list->capacity > list->length) { //добавление без удаления последнего
-        return add_node(list, hash, page);
+        return add_node(list, page);
     }
-    struct node* res = add_node(list, hash, page); //добавление с удалением последнего
+    struct node* res = add_node(list, page); //добавление с удалением последнего
     list->capacity--;
     struct node* last = list->tail;
     list->tail = last->prev;
     list->tail->next = NULL;
-    *hash_last = node_dtor(last);//хэш для поиска и удаления последнего элемента в хэш-таблице
+    *last_idx = node_dtor(last);//хэш для поиска и удаления последнего элемента в хэш-таблице
     return res;
 }
 
-struct node* move_elem(struct queue* list, struct node* cur_elem, struct page* page) { //перемещение элемента в начало
+struct node* move_elem(struct queue* list, struct node* cur_elem) { //перемещение элемента в начало
     cur_elem->prev->next = cur_elem->next;
     cur_elem->next->prev = cur_elem->prev;
     cur_elem->prev = NULL;
@@ -123,19 +123,19 @@ void print_list(struct queue* s) //распечатка очереди
     struct node* cur_el = s->head;
     for (int i =0; i < s->capacity; i++)
     {
-        printf("cur_el %8p   :    val %d  :  next %8p  :  prev %8p\n",cur_el, cur_el->hash, cur_el->next, cur_el->prev);
+        printf("cur_el %8p   :    val %d  :  next %8p  :  prev %8p\n",cur_el, cur_el->index, cur_el->next, cur_el->prev);
         cur_el = cur_el->next;
     }
 }
 
 void delete_queue(struct queue* list) //удаление очереди целиком
 {
-    int hash = 0;
+    int idx = 0;
     struct node* cur_el = list->head;
     for (int i = 0; i < list->capacity - 1; i++)
     {
         cur_el = cur_el->next;
-        hash = node_dtor(cur_el);
+        idx = node_dtor(cur_el);
     }
     queue_dtor(list->head);
 }
