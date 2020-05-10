@@ -2,6 +2,26 @@
 
 const int TABLESIZE = 10;
 
+struct page {
+    int index;
+    char* data;
+    int n; //кол-во символов
+};
+struct node {
+    char* data;
+    int index;
+    struct node* next;
+    struct node* prev;
+};
+
+struct queue
+{
+    int capacity;
+    int length;
+    struct node* head;
+    struct node* tail;
+};
+
 struct hash {
   int capacity;
   struct hash_node *elem;
@@ -23,20 +43,25 @@ struct hash *create_table(){
   return table;
 } 
 
-struct hash_node *add_hash_node (int index, struct node *node, struct hash *table) {
-  struct hash_node *current = NULL, *prev = NULL, check;
-  check = Checl_index(index, table);
-  if (check == NULL) { 
+struct node *add_new_page (struct page *page, struct hash *table, struct queue *list) {
+  struct hash_node *current = NULL;
+  int last_idx = 0;
+  struct node *newnode; 
+  check = Check_index(index, table);
+  if (check == NULL) { //такого элемента нет - создаем новый
+    newnode = add_new_elem(list, page, last_idx);
     current = table->elem[i];
     while (current != NULL) current = current->next;
     current -> index = index;
-    current -> n_cache = node;
+    current -> n_cache = newnode; 
     current -> next = NULL;
-    //add_and_delete(queue, node->data) - если нет этого элемента, то добавляем его в очередь и удаляем последний
-    return current;
+    if(last_idx != 0) {
+    //cюда функцию удаления ненужного адреса из хэша, передаем (last_idx, table);
+    }
+    return newnode;
   }
-  else {
-    //move(check->n_cache, index, queue) //если у нас уже есть этот элемент в очереди - двигаем его
-    return check;   
+  else { //такой элемент есть, перемещаем его в кэше, хэш-таблицу не трогаем
+    newnode = move_elem(list, check->n_cache);
+    return newnode;  
   }
 }
