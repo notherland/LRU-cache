@@ -14,8 +14,7 @@ struct node {
     struct node* prev;
 };
 
-struct queue
-{
+struct queue {
     int capacity;
     int length;
     struct node* head;
@@ -31,25 +30,27 @@ struct hash_node {
   int index;
   struct node *n_cache;
   struct hash_node *next;
-}
+};
 
 struct hash *create_table(){
   struct hash *table = (struct hash *)calloc(1,sizeof(struct hash));
   table->capacity = TABLESIZE;
-  table->elem = (struct hash node *)calloc(capacity, sizeof(struct hash node));
-  for(int i = 0; i < table->capacity, i++){
+  table->elem = (struct hash_node *)calloc(table->capacity, sizeof(struct_hash node));
+  for(int i = 0; i < table->capacity; i++){
     table->elem[i] = NULL;
   }
   return table;
 } 
 
 struct node *add_new_page (struct page *page, struct hash *table, struct queue *list) {
-  struct hash_node *current = NULL;
-  int last_idx = 0;
+  struct hash_node *current = NULL, *check = NULL;
+  int last_idx = 0, i = 0, index;
   struct node *newnode; 
+  index = page->index;
   check = Check_index(index, table);
+  i = Hash_func(index);
   if (check == NULL) { //такого элемента нет - создаем новый
-    newnode = add_new_elem(list, page, last_idx);
+    newnode = add_new_elem(list, page, &last_idx);
     current = table->elem[i];
     while (current != NULL) current = current->next;
     current -> index = index;
