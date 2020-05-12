@@ -40,12 +40,33 @@ struct hash *create_table(){
     table->elem[i] = NULL;
   }
   return table;
-} 
+}
+
+void delete_from_hash(int last_idx, struct hash* table) {
+  int idx = hash_func(last_idx);
+  struct hash_node* cur = table->elem[idx];
+  if ((cur->index) == last_idx) {
+    table->elem[idx] = cur->next;
+    remove_hash_node(cur);
+  }
+  else {
+    while ((cur->next->index) != last_idx)
+      cur = cur->next;
+    cur->next = cur->next->next;
+    remove_hash_node(cur);
+  }
+}
+
+void remove_hash_node(struct hash_node* p) {
+  p->next = NULL;
+  p->index = -666;
+  free(p);
+}
 
 struct node *add_new_page (struct page *page, struct hash *table, struct queue *list) {
   struct hash_node *current = NULL, *check = NULL;
   int last_idx = 0, i = 0, index;
-  struct node *newnode; 
+  struct node *newnode;
   index = page->index;
   check = Check_index(index, table);
   i = Hash_func(index);
@@ -54,15 +75,14 @@ struct node *add_new_page (struct page *page, struct hash *table, struct queue *
     current = table->elem[i];
     while (current != NULL) current = current->next;
     current -> index = index;
-    current -> n_cache = newnode; 
+    current -> n_cache = newnode;
     current -> next = NULL;
-    if(last_idx != 0) {
-    //cюда функцию удаления ненужного адреса из хэша, передаем (last_idx, table);
-    }
+    if(last_idx != 0)
+      delete_from_hash(last_idx, table);
     return newnode;
   }
   else { //такой элемент есть, перемещаем его в кэше, хэш-таблицу не трогаем
     newnode = move_elem(list, check->n_cache);
-    return newnode;  
+    return newnode;
   }
 }
