@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 struct page {
     int index;
@@ -23,6 +24,12 @@ struct queue
     struct node* head;
     struct node* tail;
 };
+
+//input
+
+void input ();
+
+struct page* input_page (int index);
 
 //hash table
 
