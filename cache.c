@@ -1,5 +1,12 @@
 #include "header.h"
 
+struct node {
+    char* data;
+    int index;
+    struct node* next;
+    struct node* prev;
+};
+
 struct queue* queue_ctor() //создание очереди
 {
     struct queue* res = (struct queue*) calloc(1, sizeof(*res));
