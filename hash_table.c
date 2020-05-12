@@ -14,7 +14,6 @@ int hash_func (int index)
     return index % TABLESIZE;
 }
 
-
 struct hash *create_table(){
     int i = 0;
     struct hash *table = (struct hash *)calloc(1,sizeof(struct hash));
@@ -42,9 +41,30 @@ struct hash_node* check_index (int index, struct hash* table)
     return NULL;
 }
 
+void remove_hash_node(struct hash_node* p) {
+    p->next = NULL;
+    p->index = -666;
+    free(p);
+}
+
+void delete_from_hash(int last_idx, struct hash* table) {
+    int idx = hash_func(last_idx);
+    struct hash_node* cur = table->elem[idx];
+    if ((cur->index) == last_idx) {
+        table->elem[idx] = cur->next;
+        remove_hash_node(cur);
+    }
+    else {
+        while ((cur->next->index) != last_idx)
+            cur = cur->next;
+        cur->next = cur->next->next;
+        remove_hash_node(cur);
+    }
+}
+
 struct node *add_new_page (struct page *page, struct hash *table, struct queue *list) {
     struct hash_node *current = (struct hash_node *) calloc (1, sizeof(struct hash_node));
-    struct hash_node *check = (struct hash_node *) calloc (1, sizeof(struct hash_node));
+    struct hash_node *check;
     int last_idx = 0, key = 0, index;
     struct node *newnode;
     index = page->index;
@@ -97,11 +117,10 @@ void print_hash (struct hash* table)
         list = table->elem[i];
         while (list != NULL)
         {
-            printf ("%d, ", list->index);
+            printf ("list = %d, index = %d, ", list, list->index);
             list = list->next;
         }
         printf ("\n");
     }
     return;
 }
-
