@@ -7,13 +7,13 @@ struct node {
     struct node* prev;
 };
 
-struct queue* queue_ctor() //создание очереди
+struct queue* queue_ctor(int capacity) //создание очереди
 {
     struct queue* res = (struct queue*) calloc(1, sizeof(*res));
     assert(res);
     res->head = NULL;
     res->tail = NULL;
-    res->capacity = 0;
+    res->capacity = 10;
     res->length = 0;
     return res;
 }
@@ -89,8 +89,10 @@ struct node* add_new_elem(struct queue* list, struct page* page, int* last_idx) 
 }
 
 struct node* move_elem(struct queue* list, struct node* cur_elem) { //перемещение элемента в начало
-    cur_elem->prev->next = cur_elem->next;
-    cur_elem->next->prev = cur_elem->prev;
+    if (cur_elem->prev != NULL)
+        cur_elem->prev->next = cur_elem->next;
+    if (cur_elem->next != NULL)
+        cur_elem->next->prev = cur_elem->prev;
     cur_elem->prev = NULL;
     cur_elem->next = list->head;
     list->head = cur_elem;
@@ -103,7 +105,7 @@ void print_list(struct queue* s) //распечатка очереди
     printf("list.....\n");
     printf("head %8p tail %8p count %d\n",s->head,s->tail,s->capacity);
     struct node* cur_el = s->head;
-    for (int i =0; i < s->capacity; i++)
+    for (int i = 0; i < (s->capacity); i++)
     {
         printf("cur_el %8p   :    val %d  :  next %8p  :  prev %8p\n",cur_el, cur_el->index, cur_el->next, cur_el->prev);
         cur_el = cur_el->next;
