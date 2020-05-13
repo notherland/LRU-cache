@@ -7,14 +7,17 @@ struct node {
     struct node* prev;
 };
 
-struct queue* queue_ctor(int capacity) //создание очереди
+struct queue* queue_ctor() //создание очереди
 {
-    struct queue* res = (struct queue*) calloc(1, sizeof(*res));
+    //printf ("beg queue\n");
+    struct queue* res = (struct queue*) calloc(1, sizeof(struct queue));
+    //printf ("res = %p", res);
     assert(res);
     res->head = NULL;
     res->tail = NULL;
     res->capacity = 10;
     res->length = 0;
+    //printf ("end queue\n");
     return res;
 }
 
