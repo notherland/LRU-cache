@@ -43,28 +43,26 @@ int cachecheck(FILE *f, int *cache, int m, int n) {
   long long int res = 0, i, j, curfull = 0, isequal = 0, num;
   for (i = 0; i < n; i++) {
     fscanf(f, "%lli", &num);
-    // printf("num = %d", num);
+    //printf("num = %lli", num);
     if (curfull == m) {
       for (j = 0; j < m; j++) {
         if (cache[j] == num) {
           isequal = 1;
           res++;
-          movemas(
-              cache, j,
-              m);    // puts cache[j] to cache[0] and moves other cache elements
-          j = m - 1; //??
+          movemas(cache, j, m);    // puts cache[j] to cache[0] and moves other cache elements
+          j = m - 1; 
         }
       }
       if (isequal == 0) {
         movemas2(cache, num, m);
       }
       isequal = 0;
-      // printf("\nres = %d", res);
-      // printmas(cache, m);
+      //printf("\nres = %lli", res);
+     // printmas(cache, m);
     }
     if (curfull < m) {
       for (j = 0; j < m; j++) {
-        if ((cache[j] == num) && (j <= curfull)) {
+        if ((cache[j] == num) && (j < curfull)) {
           res++;
           isequal = 1;
           movemas(cache, j, m);
@@ -75,53 +73,21 @@ int cachecheck(FILE *f, int *cache, int m, int n) {
         curfull++;
       }
       isequal = 0;
-      // printf("\nres = %d", res);
-      // printmas(cache, m);
+      //printf("\nres = %lli", res);
+      //printmas(cache, m);
     }
   }
   return res;
 }
 
-#if 0
-int cachecheck(FILE *f, int *cache, int m, long long int n) {
-  long long int res = 0, i = 0, j = 0, curfull = 0, isequal = 0, num;
-  for (i = 0; i < n; i++) {
-    fscanf(f, "%lli", &num);
-    //printf("num = %d", num);
-    if (curfull == m) {
-      for (j = 0; j < m; j++) {
-        if (cache[j] == num)
-          res++;
-      }
-      //printf("\nres = %d", res);
-      //printmas(cache, m);
-    }
-    if (curfull < m) {
-      for (j = 0; j < m; j++) {
-        if ((cache[j] == num) && (j <= curfull)) {
-          res++;
-          isequal = 1;
-        }
-      }
-      if (isequal == 0) {
-        cache[curfull] = num;
-        curfull++;
-      }
-      isequal = 0;
-      //printf("\nres = %d", res);
-      //printmas(cache, m);
-    }
-  }
-  return res;
-}
-#endif
+
 int main() {
   clock_t begin = clock();
   FILE *f;
   long long int m, n, res = -1;
   int *cache;
-  f = fopen("test.txt", "r");
-  fscanf(f, "%lli %lli", &m, &n);
+  //f = fopen("test12.txt", "r");
+  fscanf(stdin, "%lli %lli", &m, &n);
   cache = (int *)calloc(m, sizeof(int));
   res = cachecheck(f, cache, m, n);
   printf("number of hits = %lli", res);
