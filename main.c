@@ -15,8 +15,8 @@ int main() {
     input (table, list, &cache_hits);
     printf ("cache_hits: ");
     printf ("%d\n", cache_hits);
-    print_hash(table);
-    print_list(list);
+    //print_hash(table);
+    //print_list(list);
     
     delete_table(table);
     delete_queue(list);
