@@ -75,8 +75,8 @@ void print_list(struct queue* s); //печать очереди
 
 void delete_queue(struct queue* list); //удаление очереди целиком
 
-void run_tests();
+void run_tests(); //тестирование
 
-void run_test(const char *filename);
+void run_test(const char *filename); //запуск теста
 
 #endif //LRU_CACHE_H
