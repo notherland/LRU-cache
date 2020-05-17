@@ -33,6 +33,7 @@ void queue_dtor(struct queue *list) { //удаление списка
     list->head = NULL;
     list->capacity = -666;
     list->length = 0;
+    free(list);
 }
 
 void node_dtor(struct node *elem) { //удаление элемента списка
@@ -78,9 +79,8 @@ struct node *replace_node(struct queue *list, int cur_idx) { //добавлен�
     return res;
 }
 
-struct node *add_new_elem(struct queue *list, int cur_idx, int *last_idx) { //добавление ранее не встречавшейся страницы
+struct node *add_new_elem(struct queue *list, int cur_idx) { //добавление ранее не встречавшейся страницы
     assert (list);
-    assert (last_idx);
 
     struct node *res = NULL;
     struct node *tmp = NULL;
