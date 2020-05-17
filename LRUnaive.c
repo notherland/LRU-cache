@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+
 void printmas(int *mas, int n) {
   int i = 0;
   printf("\n");
@@ -21,8 +21,6 @@ void movemas(int *cache, int j, int m) {
   tmp = cache[j];
   for (k = j; k > 0; k--) {
     cache[k] = cache[k - 1];
-    // printf("\nmovemas: k = %d; ", k);
-    // printmas(cache, m);
   }
   cache[0] = tmp;
   return;
@@ -32,8 +30,6 @@ void movemas2(int *cache, int num, int m) {
   long long int k = 0;
   for (k = m - 1; k > 0; k--) {
     cache[k] = cache[k - 1];
-    // printf("\nmovemas2: k = %d; ", k);
-    // printmas(cache, m);
   }
   cache[0] = num;
   return;
@@ -48,8 +44,10 @@ int cachecheck(FILE *f, int *cache, int m, int n) {
         if (cache[j] == num) {
           isequal = 1;
           res++;
-          movemas(cache, j, m);    // puts cache[j] to cache[0] and moves other cache elements
-          j = m - 1; 
+          movemas(
+              cache, j,
+              m); // puts cache[j] to cache[0] and moves other cache elements
+          j = m - 1;
         }
       }
       if (isequal == 0) {
@@ -74,7 +72,6 @@ int cachecheck(FILE *f, int *cache, int m, int n) {
   }
   return res;
 }
-
 
 int main() {
   FILE *f;
