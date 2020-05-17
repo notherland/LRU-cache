@@ -1,21 +1,18 @@
-#include "header.h"
+#include "LRU_cache.h"
 
-void input (struct hash* table, struct queue* queue)
+void input (struct hash* table, struct queue* list, int* cache_hits)
 {
-    int n = 0, i = 0, index = 0;
-    printf ("Please enter the amount of requests : ");
+    int page;
+    int n = 0, i = 0;
+
+    printf ("Enter the amount of requests :");
     assert (scanf ("%d", &n));
+    printf ("Enter your requests:");
+
     for (i = 0; i < n; i += 1)
     {
-        scanf ("%d", &index);
-        input_page (index);
-        add_new_elem()
+        scanf ("%d", &page);
+        //printf ("%d) page = %d\n", i, page);
+        add_new_page(table, list, page, cache_hits);
     }
-    return;
-}
-
-struct page* input_page (int index)
-{
-    struct page* page = {index, NULL, 0};
-    return page;
 }

@@ -31,7 +31,7 @@ struct queue {
 };
 //input
 
-void input (FILE *f, struct hash* table, struct queue* list, int* cache_hits); //ввод запросов
+void input (); //ввод запросов
 
 //hash table
 
@@ -74,6 +74,7 @@ void move_elem(struct queue* list, struct node* cur_elem); //перемещен�
 void print_list(struct queue* s); //печать очереди
 
 void delete_queue(struct queue* list); //удаление очереди целиком
+
 
 void run_tests(); //тестирование
 
