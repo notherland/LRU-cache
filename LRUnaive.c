@@ -43,7 +43,6 @@ int cachecheck(FILE *f, int *cache, int m, int n) {
   long long int res = 0, i, j, curfull = 0, isequal = 0, num;
   for (i = 0; i < n; i++) {
     fscanf(f, "%lli", &num);
-    //printf("num = %lli", num);
     if (curfull == m) {
       for (j = 0; j < m; j++) {
         if (cache[j] == num) {
@@ -57,8 +56,6 @@ int cachecheck(FILE *f, int *cache, int m, int n) {
         movemas2(cache, num, m);
       }
       isequal = 0;
-      //printf("\nres = %lli", res);
-     // printmas(cache, m);
     }
     if (curfull < m) {
       for (j = 0; j < m; j++) {
@@ -73,8 +70,6 @@ int cachecheck(FILE *f, int *cache, int m, int n) {
         curfull++;
       }
       isequal = 0;
-      //printf("\nres = %lli", res);
-      //printmas(cache, m);
     }
   }
   return res;
@@ -82,17 +77,12 @@ int cachecheck(FILE *f, int *cache, int m, int n) {
 
 
 int main() {
-  clock_t begin = clock();
   FILE *f;
   long long int m, n, res = -1;
   int *cache;
-  //f = fopen("test12.txt", "r");
   fscanf(stdin, "%lli %lli", &m, &n);
   cache = (int *)calloc(m, sizeof(int));
   res = cachecheck(f, cache, m, n);
   printf("number of hits = %lli", res);
-  clock_t end = clock();
-	double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-	printf("\ntime spent %lf sec", time_spent);
   return 0;
 }
