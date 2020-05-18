@@ -31,7 +31,7 @@ struct queue {
 };
 //input
 
-void input (); //ввод запросов
+void input (struct hash* table, struct queue* list, int* cache_hits); //ввод запросов
 
 //hash table
 
